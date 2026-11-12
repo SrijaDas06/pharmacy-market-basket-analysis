@@ -78,35 +78,6 @@ The findings illustrate how recurring transaction patterns can provide informati
 - Association Rule Mining
 - Jupyter Notebook
 
-## Repository Structure
-
-```text
-Pharmacy-Market-Basket-Analysis/
-│
-├── README.md
-├── requirements.txt
-│
-├── data/
-│   └── README.md
-│
-├── notebooks/
-│   └── market_basket_analysis.ipynb
-│
-├── src/
-│   ├── apriori_analysis.py
-│   ├── fpgrowth_analysis.py
-│   └── preprocessing.py
-│
-├── outputs/
-│   └── association_rules.csv
-│
-├── visualizations/
-│   └── association_rules.png
-│
-└── reports/
-    └── research_paper.pdf
-```
-
 ## Potential Applications
 
 - Identifying frequently associated medicines.
