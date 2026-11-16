@@ -5,7 +5,7 @@ Co-prescription pattern mining with **Apriori** and **FP-Growth** to support med
 > Companion code for the paper *"Optimizing Pharmacy Business and Inventory Management: A comprehensive study through Market Basket Analysis based on Co-Prescription Patterns using Data Analytics"*
 > Srija Das, Tamajit Pal, Tamali Khan, Bidisha Bhabani, Tanaya Das, Radhakrishna Jana. CSE, JIS University, Kolkata, India.
 
-[![Open In Colab](https://github.com/SrijaDas06/pharmacy-market-basket-analysis/blob/main/MarketBasketAnalysis.ipynb)](https://google.com)
+[![Open In Colab](https://github.com/SrijaDas06/pharmacy-market-basket-analysis/blob/main/MarketBasketAnalysis.ipynb)]
 
 ---
 
