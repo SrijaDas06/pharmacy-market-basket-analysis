@@ -61,16 +61,6 @@ Default thresholds (they reproduce the paper's tables):
 2. Run all cells (`Runtime` → `Run all`).
 3. When prompted, upload the `.xlsx` files from `data/`.
 
-### Local
-
-```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>
-pip install mlxtend pandas numpy matplotlib openpyxl jupyter
-jupyter notebook Pharmacy_MBA_Apriori_FPGrowth.ipynb
-```
-
-Copy the `.xlsx` files into the notebook's working directory, since the upload cell only works inside Colab.
 
 ## Data
 
@@ -99,23 +89,9 @@ The notebook also produces the full rule tables, per-rule plots and a stock-prio
 - **Algorithm comparison.** Apriori and FP-Growth return identical rules at identical thresholds, as expected. On data this small, runtime differences (roughly 3-5 ms) are noise, so no speed or scalability conclusion should be drawn from this repository.
 - **Association is not causation.** Co-prescription reflects clinical practice and prescriber habits, not demand forecasts. Rules should inform, not replace, stock-level planning.
 
-## Future work
 
-- Larger, multi-pharmacy transaction data
-- Stock-out prediction using transaction history and live inventory levels
-- Region-level demand and prevalent-disease analysis
 
-## Citation
 
-```bibtex
-@article{das_pharmacy_mba,
-  title   = {Optimizing Pharmacy Business and Inventory Management: A comprehensive study through Market Basket Analysis based on Co-Prescription Patterns using Data Analytics},
-  author  = {Das, Srija and Pal, Tamajit and Khan, Tamali and Bhabani, Bidisha and Das, Tanaya and Jana, Radhakrishna},
-  journal = {<journal / venue>},
-  year    = {<year>},
-  doi     = {<doi>}
-}
-```
 
 ## Authors
 
