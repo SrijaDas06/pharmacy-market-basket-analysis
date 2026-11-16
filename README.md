@@ -122,9 +122,4 @@ The notebook also produces the full rule tables, per-rule plots and a stock-prio
 Srija Das, Tamajit Pal, Tamali Khan, Bidisha Bhabani, Tanaya Das, Radhakrishna Jana
 Department of CSE, JIS University, Kolkata, West Bengal, India
 
-Correspondence: bidisha035810@gmail.com
 
-## License
-
-<!-- Choose one, e.g. MIT, and add a LICENSE file. -->
-Released under the MIT License. See `LICENSE`.
