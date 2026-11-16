@@ -1,98 +1,130 @@
-# Pharmacy Inventory Optimization Using Market Basket Analysis
+# Pharmacy Inventory Optimization using Market Basket Analysis
+
+Co-prescription pattern mining with **Apriori** and **FP-Growth** to support medicine stock decisions in a pharmacy.
+
+> Companion code for the paper *"Optimizing Pharmacy Business and Inventory Management: A comprehensive study through Market Basket Analysis based on Co-Prescription Patterns using Data Analytics"*
+> Srija Das, Tamajit Pal, Tamali Khan, Bidisha Bhabani, Tanaya Das, Radhakrishna Jana. CSE, JIS University, Kolkata, India.
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/<your-username>/<your-repo>/blob/main/Pharmacy_MBA_Apriori_FPGrowth.ipynb)
+
+---
 
 ## Overview
 
-This project applies **Market Basket Analysis (MBA)** to prescription transaction data to identify medicines that frequently occur together. The objective is to uncover co-prescription patterns that can support pharmacy inventory planning and medicine availability.
+Stockouts and overstocking are the two largest inventory problems in retail, and pharmacies feel both acutely. This project treats each prescription as a "basket" of medicines and mines association rules to find which medicines are prescribed together. Medicines that co-occur with high support, confidence and lift are candidates for guaranteed stock and bundled placement.
 
-The project explores association rule mining using two algorithms:
+Prescriptions are grouped by symptom category:
 
-- **Apriori:** Identifies frequent itemsets and generates association rules.
-- **FP-Growth:** Mines frequent patterns using an FP-tree-based approach.
+| Symptom group | Transactions | Unique medicines |
+|---|---|---|
+| Fever, cough, headache and body pain | 32 | 19 |
+| Pressure (blood pressure) | 20 | 33 |
+| Hypertension | 20 | 32 |
+| Gastric, vomiting and food poisoning | 30 | 39 |
 
-The algorithms are compared using support, confidence and lift.
+## Pipeline
 
-## Problem Statement
+1. **Load** the cleaned transactions from each workbook (`dummy data` sheet).
+2. **Encode** each basket as a one-hot matrix (`TransactionEncoder`).
+3. **Mine** frequent itemsets with Apriori and FP-Growth (`mlxtend`).
+4. **Generate** association rules and compute support, confidence and lift.
+5. **Split** rules into 2-itemset and 3-itemset tables (paper Tables 3-8).
+6. **Compare** the two algorithms (rule agreement, averaged runtime).
+7. **Visualise** and **export** results to Excel.
 
-Pharmacies need to maintain adequate medicine stock while avoiding unnecessary overstocking. Analysing prescription transactions can reveal recurring medicine combinations and provide useful insights for inventory planning.
-
-This project investigates how association rule mining can identify frequently occurring medicine combinations and help inform stock-management decisions.
-
-## Objectives
-
-- Identify frequently occurring medicine combinations in prescription transactions.
-- Generate association rules for two-item and three-item medicine combinations.
-- Evaluate associations using support, confidence and lift.
-- Compare the results produced by Apriori and FP-Growth.
-- Explore how the identified patterns could support pharmacy inventory planning.
-
-## Methodology
-
-1. **Data Collection:** Obtain prescription transaction data.
-2. **Preprocessing:** Group medicines by transaction ID and transform transactions into a suitable format.
-3. **Frequent Itemset Mining:** Apply Apriori and FP-Growth to identify frequent medicine combinations.
-4. **Association Rule Generation:** Generate rules using support, confidence and lift.
-5. **Comparison:** Compare the algorithms across the analysed prescription categories.
-6. **Interpretation:** Examine recurring medicine combinations and their potential relevance to inventory management.
-
-## Apriori Implementation
-
-The provided Apriori implementation uses the following parameters:
+Default thresholds (they reproduce the paper's tables):
 
 | Parameter | Value |
-|---|---:|
-| Minimum support | 30% |
-| Minimum confidence | 50% |
-| Itemset sizes | 2-item and 3-item |
+|---|---|
+| `MIN_SUPPORT` | 0.30 |
+| `MIN_CONFIDENCE` | 0.50 |
 
-The implementation uses `mlxtend` for transaction encoding, frequent itemset mining and association rule generation.
+## Repository structure
 
-## Evaluation Metrics
+```
+.
+├── Pharmacy_MBA_Apriori_FPGrowth.ipynb   # Full analysis notebook (Google Colab)
+├── data/
+│   ├── fever_cough_headache_bodypain_Apriori___Fp_final.xlsx
+│   ├── pressure_Apriori___FP_final.xlsx
+│   ├── hypertension_Apriori___FP_final.xlsx
+│   ├── Gastric__vomiting__food_Apriori__FP_final.xlsx
+│   └── all_data_with_each_med_frequency__2_.xlsx   # optional, used for Fig. 1-2
+└── README.md
+```
 
-- **Support:** Indicates how frequently a medicine combination appears in the transactions.
-- **Confidence:** Measures how frequently the consequent appears when the antecedent occurs.
-- **Lift:** Measures the strength of an association relative to independent occurrence.
+## Getting started
 
-A lift greater than 1 indicates a positive association in the analysed dataset.
+### Google Colab (recommended)
 
-## Key Findings
+1. Click the **Open in Colab** badge above.
+2. Run all cells (`Runtime` → `Run all`).
+3. When prompted, upload the `.xlsx` files from `data/`.
 
-The research compares Apriori and FP-Growth across symptom-wise prescription categories.
+### Local
 
-Examples reported in the research include:
+```bash
+git clone https://github.com/<your-username>/<your-repo>.git
+cd <your-repo>
+pip install mlxtend pandas numpy matplotlib openpyxl jupyter
+jupyter notebook Pharmacy_MBA_Apriori_FPGrowth.ipynb
+```
 
-- Paracetamol and Tramadol: confidence of 1.00 and lift of 3.20.
-- Syrup Granocyf and Nasoclear nasal drops: confidence of 1.00 and lift of 2.46.
-- Coldvan and Lasix 40: confidence of 0.91 and lift of 1.21 in the reported pressure-related analysis.
+Copy the `.xlsx` files into the notebook's working directory, since the upload cell only works inside Colab.
 
-The findings illustrate how recurring transaction patterns can provide information for pharmacy stock planning.
+## Data
 
-**Note:** These are associations observed in the analysed prescription data, not medical recommendations or evidence that medicines should be prescribed together.
+- Source: prescriptions from an Indian pharmacy, obtained from Kaggle (see the paper, Phase I).
+- Each workbook contains the raw prescriptions (`original data`), the cleaned transactions (`dummy data`, the notebook's input) and the originally reported Apriori and FP-Growth outputs.
+- Medicine names were normalised from free-text prescriptions (for example `TAB. RANITIDINE 150 MG BD` became `RANITIDINE`). That normalisation was done outside the notebook, so the notebook starts from the cleaned sheets.
 
-## Technologies Used
+## Selected results
 
-- Python
-- Pandas
-- Mlxtend
-- Apriori Algorithm
-- FP-Growth Algorithm
-- Association Rule Mining
-- Jupyter Notebook
+Highest-signal 2-itemset rules (identical under both algorithms):
 
-## Potential Applications
+| Symptom group | Rule | Support | Confidence | Lift |
+|---|---|---|---|---|
+| Fever, cough, body pain | Syrup Granocyf → Nasoclear Nasal Drops | 0.34 | 1.00 | 2.46 |
+| Fever, cough, body pain | Paracetamol ↔ Tramadol | 0.31 | 1.00 | 3.20 |
+| Pressure | Rantac 150 → Lasix 40 | 0.60 | 0.86 | 1.14 |
+| Pressure | Coldvan → Lasix 40 | 0.50 | 0.91 | 1.21 |
+| Hypertension | Pantoprazole → Furosemide | 0.35 | 0.87 | 1.46 |
+| Gastric, vomiting, food poisoning | Lasix → Amlodipine | 0.53 | 1.00 | 1.50 |
 
-- Identifying frequently associated medicines.
-- Supporting inventory prioritisation.
-- Informing stock replenishment decisions.
-- Understanding recurring prescription transaction patterns.
+The notebook also produces the full rule tables, per-rule plots and a stock-priority ranking per symptom group, and exports everything to `MBA_results.xlsx`.
 
-## Research Work
+## Limitations
 
-This project is associated with the research study:
+- **Small datasets.** Each group has only 20-32 transactions, so a support of 0.30 corresponds to 6-10 prescriptions. Results are illustrative, not statistically robust.
+- **Algorithm comparison.** Apriori and FP-Growth return identical rules at identical thresholds, as expected. On data this small, runtime differences (roughly 3-5 ms) are noise, so no speed or scalability conclusion should be drawn from this repository.
+- **Association is not causation.** Co-prescription reflects clinical practice and prescriber habits, not demand forecasts. Rules should inform, not replace, stock-level planning.
 
-**"Optimizing Pharmacy Business and Inventory Management: A Comprehensive Study through Market Basket Analysis based on Co-Prescription Patterns using Data Analytics."**
+## Future work
 
-The study examines Apriori and FP-Growth for pharmacy inventory-management applications.
+- Larger, multi-pharmacy transaction data
+- Stock-out prediction using transaction history and live inventory levels
+- Region-level demand and prevalent-disease analysis
 
-## Disclaimer
+## Citation
 
-This project is intended for academic research and inventory-analysis purposes only. Association rules identify patterns in historical transaction data and must not be interpreted as clinical prescribing recommendations.
+```bibtex
+@article{das_pharmacy_mba,
+  title   = {Optimizing Pharmacy Business and Inventory Management: A comprehensive study through Market Basket Analysis based on Co-Prescription Patterns using Data Analytics},
+  author  = {Das, Srija and Pal, Tamajit and Khan, Tamali and Bhabani, Bidisha and Das, Tanaya and Jana, Radhakrishna},
+  journal = {<journal / venue>},
+  year    = {<year>},
+  doi     = {<doi>}
+}
+```
+
+## Authors
+
+Srija Das, Tamajit Pal, Tamali Khan, Bidisha Bhabani, Tanaya Das, Radhakrishna Jana
+Department of CSE, JIS University, Kolkata, West Bengal, India
+
+Correspondence: bidisha035810@gmail.com
+
+## License
+
+<!-- Choose one, e.g. MIT, and add a LICENSE file. -->
+Released under the MIT License. See `LICENSE`.
